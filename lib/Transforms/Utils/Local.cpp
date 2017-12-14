@@ -1548,6 +1548,14 @@ void llvm::removeUnwindEdge(BasicBlock *BB) {
 /// if they are in a dead cycle.  Return true if a change was made, false
 /// otherwise.
 bool llvm::removeUnreachableBlocks(Function &F, LazyValueInfo *LVI) {
+// Decompiler - CONDITIONAL OFF
+// Do not remove unreachable BBs if specific named metadata are present in
+// the module.
+//
+if (F.getParent()->getNamedMetadata("llvmToAsmGlobalVariableName")) {
+  return false;
+}
+
   SmallPtrSet<BasicBlock*, 16> Reachable;
   bool Changed = markAliveBlocks(F, Reachable);
 

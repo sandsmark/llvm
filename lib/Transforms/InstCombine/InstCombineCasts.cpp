@@ -582,6 +582,7 @@ Instruction *InstCombiner::visitTrunc(TruncInst &CI) {
 /// the icmp.
 Instruction *InstCombiner::transformZExtICmp(ICmpInst *ICI, Instruction &CI,
                                              bool DoXform) {
+#if 0 // Decompiler - OFF
   // If we are just checking for a icmp eq of a single bit and zext'ing it
   // to an integer, then shift the bit to the appropriate place and then
   // cast to integer to avoid the comparison.
@@ -659,6 +660,7 @@ Instruction *InstCombiner::transformZExtICmp(ICmpInst *ICI, Instruction &CI,
       }
     }
   }
+#endif
 
   // icmp ne A, B is equal to xor A, B when A and B only really have one bit.
   // It is also profitable to transform icmp eq into not(xor(A, B)) because that
@@ -965,6 +967,7 @@ Instruction *InstCombiner::visitZExt(ZExtInst &CI) {
 
 /// Transform (sext icmp) to bitwise / integer operations to eliminate the icmp.
 Instruction *InstCombiner::transformSExtICmp(ICmpInst *ICI, Instruction &CI) {
+#if 0 // Decompiler - OFF
   Value *Op0 = ICI->getOperand(0), *Op1 = ICI->getOperand(1);
   ICmpInst::Predicate Pred = ICI->getPredicate();
 
@@ -1046,6 +1049,7 @@ Instruction *InstCombiner::transformSExtICmp(ICmpInst *ICI, Instruction &CI) {
       }
     }
   }
+#endif
 
   return nullptr;
 }

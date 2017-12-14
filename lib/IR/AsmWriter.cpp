@@ -2819,6 +2819,22 @@ void AssemblyWriter::printInfoComment(const Value &V) {
 
 // This member is called for each Instruction in a function..
 void AssemblyWriter::printInstruction(const Instruction &I) {
+
+// Decompiler, matula: comment special StoreInst with hexadecimal values.
+if (const StoreInst *SI = dyn_cast<StoreInst>(&I))
+{
+	if (isa<ConstantInt>(SI->getValueOperand())
+			&& isa<GlobalVariable>(SI->getPointerOperand())
+			&& SI->hasMetadata())
+	{
+		auto val = cast<ConstantInt>(SI->getValueOperand())->getZExtValue();
+
+		Out << "\n; ";
+		Out.write_hex(val);
+		Out << "\n";
+	}
+}
+
   if (AnnotationWriter) AnnotationWriter->emitInstructionAnnot(&I, Out);
 
   // Print out indentation for an instruction.

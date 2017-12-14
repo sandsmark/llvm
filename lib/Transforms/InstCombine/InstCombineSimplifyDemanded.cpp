@@ -555,11 +555,15 @@ Value *InstCombiner::SimplifyDemandedUseBits(Value *V, APInt DemandedMask,
       {
         Value *VarX; ConstantInt *C1;
         if (match(I->getOperand(0), m_Shr(m_Value(VarX), m_ConstantInt(C1)))) {
-          Instruction *Shr = cast<Instruction>(I->getOperand(0));
-          Value *R = SimplifyShrShlDemandedBits(Shr, I, DemandedMask,
+// Decompiler - NEW CODE START (bug #1781).
+          if (isa<Instruction>(I->getOperand(0))) {
+// Decompiler - NEW CODE END.
+            Instruction *Shr = cast<Instruction>(I->getOperand(0));
+            Value *R = SimplifyShrShlDemandedBits(Shr, I, DemandedMask,
                                                 KnownZero, KnownOne);
-          if (R)
-            return R;
+            if (R)
+              return R;
+          }
         }
       }
 

@@ -529,6 +529,7 @@ static unsigned conjugateICmpMask(unsigned Mask) {
 /// decomposition fails.
 static bool decomposeBitTestICmp(const ICmpInst *I, ICmpInst::Predicate &Pred,
                                  Value *&X, Value *&Y, Value *&Z) {
+#if 0 // Decompiler - OFF
   ConstantInt *C = dyn_cast<ConstantInt>(I->getOperand(1));
   if (!C)
     return false;
@@ -569,6 +570,8 @@ static bool decomposeBitTestICmp(const ICmpInst *I, ICmpInst::Predicate &Pred,
   X = I->getOperand(0);
   Z = ConstantInt::getNullValue(C->getType());
   return true;
+#endif
+  return false;
 }
 
 /// Handle (icmp(A & B) ==/!= C) &/| (icmp(A & D) ==/!= E)

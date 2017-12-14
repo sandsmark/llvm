@@ -716,8 +716,15 @@ COFFObjectFile::COFFObjectFile(MemoryBufferRef Object, std::error_code &EC)
     }
     if ((EC = getObject(DataDirectory, Data, DataDirAddr, DataDirSize)))
       return;
+  }
+
+  // == Decompiler BEGIN ==
+  // This change fixes issue with section headers (#1672).
+  // This change was also sent to LLVM upstream (see https://reviews.llvm.org/D22750)
+  if (COFFHeader) {
     CurPtr += COFFHeader->SizeOfOptionalHeader;
   }
+  // == Decompiler END ==
 
   if ((EC = getObject(SectionTable, Data, base() + CurPtr,
                       (uint64_t)getNumberOfSections() * sizeof(coff_section))))

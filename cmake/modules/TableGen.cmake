@@ -139,9 +139,12 @@ macro(add_tablegen target project)
     endif(CMAKE_SIZEOF_VOID_P MATCHES "8")
   endif( MINGW )
   if (${project} STREQUAL LLVM AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
-    install(TARGETS ${target}
-            EXPORT LLVMExports
-            RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
+    # == Decompiler OFF BEGIN ==
+    # To fix build with MSVC project, do not install the tablegen.
+    # install(TARGETS ${target}
+    #         EXPORT LLVMExports
+    #         RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
+    # == Decompiler OFF END ==
   endif()
   set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${target})
 endmacro()

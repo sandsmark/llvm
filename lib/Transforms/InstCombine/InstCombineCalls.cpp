@@ -1260,6 +1260,7 @@ Instruction *InstCombiner::visitCallInst(CallInst &CI) {
   IntrinsicInst *II = dyn_cast<IntrinsicInst>(&CI);
   if (!II) return visitCallSite(&CI);
 
+#if 0 // Decompiler - OFF
   // Intrinsics cannot occur in an invoke, so handle them here instead of in
   // visitCallSite.
   if (MemIntrinsic *MI = dyn_cast<MemIntrinsic>(II)) {
@@ -1316,6 +1317,7 @@ Instruction *InstCombiner::visitCallInst(CallInst &CI) {
 
     if (Changed) return II;
   }
+#endif
 
   auto SimplifyDemandedVectorEltsLow = [this](Value *Op, unsigned Width,
                                               unsigned DemandedWidth) {

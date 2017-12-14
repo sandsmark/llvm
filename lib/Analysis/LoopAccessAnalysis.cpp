@@ -150,8 +150,8 @@ const SCEV *llvm::replaceSymbolicStrideSCEV(PredicatedScalarEvolution &PSE,
 
 /// Calculate Start and End points of memory access.
 /// Let's assume A is the first access and B is a memory access on N-th loop
-/// iteration. Then B is calculated as:  
-///   B = A + Step*N . 
+/// iteration. Then B is calculated as:
+///   B = A + Step*N .
 /// Step value may be positive or negative.
 /// N is a calculated back-edge taken count:
 ///     N = (TripCount > 0) ? RoundDown(TripCount -1 , VF) : 0

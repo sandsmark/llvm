@@ -1908,6 +1908,10 @@ uint32_t MachOBindEntry::flags() const { return Flags; }
 
 int MachOBindEntry::ordinal() const { return Ordinal; }
 
+// DECOMPILER BEGIN (#1790)
+bool MachOBindEntry::malformed() const { return Malformed; }
+// DECOMPILER END (#1790)
+
 bool MachOBindEntry::operator==(const MachOBindEntry &Other) const {
   assert(Opcodes == Other.Opcodes && "compare iterators of different files");
   return (Ptr == Other.Ptr) &&

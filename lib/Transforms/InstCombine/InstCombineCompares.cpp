@@ -1570,6 +1570,7 @@ Instruction *InstCombiner::visitICmpInstWithInstAndIntCst(ICmpInst &ICI,
     break;
 
   case Instruction::Xor:         // (icmp pred (xor X, XorCst), CI)
+#if 0 // Decompiler - OFF
     if (ConstantInt *XorCst = dyn_cast<ConstantInt>(LHSI->getOperand(1))) {
       // If this is a comparison that tests the signbit (X < 0) or (x > -1),
       // fold the xor.
@@ -1634,6 +1635,7 @@ Instruction *InstCombiner::visitICmpInstWithInstAndIntCst(ICmpInst &ICI,
           XorCst->getValue() == -RHSV && RHSV.isPowerOf2())
         return new ICmpInst(ICmpInst::ICMP_UGE, LHSI->getOperand(0), XorCst);
     }
+#endif
     break;
   case Instruction::And:         // (icmp pred (and X, AndCst), RHS)
     if (LHSI->hasOneUse() && isa<ConstantInt>(LHSI->getOperand(1)) &&
@@ -3189,6 +3191,7 @@ Instruction *InstCombiner::visitICmpInst(ICmpInst &I) {
 
   Type *Ty = Op0->getType();
 
+#if 0 // Decompiler - OFF
   // icmp's with boolean values can always be turned into bitwise operations
   if (Ty->getScalarType()->isIntegerTy(1)) {
     switch (I.getPredicate()) {
@@ -3230,6 +3233,7 @@ Instruction *InstCombiner::visitICmpInst(ICmpInst &I) {
     }
     }
   }
+#endif
 
   if (ICmpInst *NewICmp = canonicalizeCmpWithConstant(I))
     return NewICmp;
@@ -4105,6 +4109,7 @@ Instruction *InstCombiner::visitICmpInst(ICmpInst &I) {
         return new ICmpInst(I.getPredicate(), ConstantExpr::getNot(RHSC), A);
     }
 
+#if 0 // Decompiler - OFF
     Instruction *AddI = nullptr;
     if (match(&I, m_UAddWithOverflow(m_Value(A), m_Value(B),
                                      m_Instruction(AddI))) &&
@@ -4127,6 +4132,7 @@ Instruction *InstCombiner::visitICmpInst(ICmpInst &I) {
       if (Instruction *R = ProcessUMulZExtIdiom(I, Op1, Op0, *this))
         return R;
     }
+#endif
   }
 
   if (I.isEquality()) {

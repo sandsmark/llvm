@@ -18,9 +18,12 @@ set(LLVM_EXPORTED_SYMBOL_FILE ${CMAKE_CURRENT_SOURCE_DIR}/lto.exports)
 
 add_llvm_library(LTO SHARED ${SOURCES})
 
-install(FILES ${LLVM_MAIN_INCLUDE_DIR}/llvm-c/lto.h
-  DESTINATION include/llvm-c
-  COMPONENT LTO)
+# == Decompiler OFF BEGIN ==
+# To fix build with MSVC project, do not install any includes.
+# install(FILES ${LLVM_MAIN_INCLUDE_DIR}/llvm-c/lto.h
+#   DESTINATION include/llvm-c
+#   COMPONENT LTO)
+# == Decompiler OFF END ==
 
 if (APPLE)
   set(LTO_VERSION ${LLVM_VERSION_MAJOR})

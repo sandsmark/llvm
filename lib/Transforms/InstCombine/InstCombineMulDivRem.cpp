@@ -185,6 +185,7 @@ Instruction *InstCombiner::visitMul(BinaryOperator &I) {
   if (Value *V = SimplifyUsingDistributiveLaws(I))
     return replaceInstUsesWith(I, V);
 
+#if 0 // Decompiler - OFF
   // X * -1 == 0 - X
   if (match(Op1, m_AllOnes())) {
     BinaryOperator *BO = BinaryOperator::CreateNeg(Op0, I.getName());
@@ -192,6 +193,7 @@ Instruction *InstCombiner::visitMul(BinaryOperator &I) {
       BO->setHasNoSignedWrap();
     return BO;
   }
+#endif
 
   // Also allow combining multiply instructions on vectors.
   {
@@ -213,6 +215,7 @@ Instruction *InstCombiner::visitMul(BinaryOperator &I) {
       return BO;
     }
 
+#if 0 // Decompiler - OFF
     if (match(&I, m_Mul(m_Value(NewOp), m_Constant(C1)))) {
       Constant *NewCst = nullptr;
       if (match(C1, m_APInt(IVal)) && IVal->isPowerOf2())
@@ -238,6 +241,7 @@ Instruction *InstCombiner::visitMul(BinaryOperator &I) {
         return Shl;
       }
     }
+#endif
   }
 
   if (ConstantInt *CI = dyn_cast<ConstantInt>(Op1)) {
@@ -1017,12 +1021,14 @@ static Instruction *foldUDivShl(Value *Op0, Value *Op1, const BinaryOperator &I,
 static size_t visitUDivOperand(Value *Op0, Value *Op1, const BinaryOperator &I,
                                SmallVectorImpl<UDivFoldAction> &Actions,
                                unsigned Depth = 0) {
+#if 0 // Decompiler - OFF
   // Check to see if this is an unsigned division with an exact power of 2,
   // if so, convert to a right shift.
   if (match(Op1, m_Power2())) {
     Actions.push_back(UDivFoldAction(foldUDivPow2Cst, Op1));
     return Actions.size();
   }
+#endif
 
   if (ConstantInt *C = dyn_cast<ConstantInt>(Op1))
     // X udiv C, where C >= signbit
@@ -1433,12 +1439,14 @@ Instruction *InstCombiner::visitURem(BinaryOperator &I) {
       return new ZExtInst(Builder->CreateURem(ZOp0->getOperand(0), ZOp1),
                           I.getType());
 
+#if 0 // Decompiler - OFF
   // X urem Y -> X and Y-1, where Y is a power of 2,
   if (isKnownToBeAPowerOfTwo(Op1, DL, /*OrZero*/ true, 0, AC, &I, DT)) {
     Constant *N1 = Constant::getAllOnesValue(I.getType());
     Value *Add = Builder->CreateAdd(Op1, N1);
     return BinaryOperator::CreateAnd(Op0, Add);
   }
+#endif
 
   // 1 urem X -> zext(X != 1)
   if (match(Op0, m_One())) {

@@ -10,5 +10,9 @@ add_llvm_tool(llvm-ar
   llvm-ar.cpp
   )
 
-add_llvm_tool_symlink(llvm-ranlib llvm-ar)
-add_llvm_tool_symlink(llvm-lib llvm-ar)
+# == Decompiler OFF BEGIN ==
+# We don't need these, so disable them. The reason is that they break MSVC
+# build via project.
+# add_llvm_tool_symlink(llvm-ranlib llvm-ar)
+# add_llvm_tool_symlink(llvm-lib llvm-ar)
+# == Decompiler OFF END ==

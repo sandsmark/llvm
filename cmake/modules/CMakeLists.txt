@@ -75,22 +75,25 @@ configure_file(
   ${llvm_cmake_builddir}/LLVMConfigVersion.cmake
   @ONLY)
 
-if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
-  install(EXPORT LLVMExports DESTINATION ${LLVM_INSTALL_PACKAGE_DIR})
-
-  install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/LLVMConfig.cmake
-    ${llvm_cmake_builddir}/LLVMConfigVersion.cmake
-    LLVM-Config.cmake
-    DESTINATION ${LLVM_INSTALL_PACKAGE_DIR})
-
-  install(DIRECTORY .
-    DESTINATION ${LLVM_INSTALL_PACKAGE_DIR}
-    FILES_MATCHING PATTERN *.cmake
-    PATTERN .svn EXCLUDE
-    PATTERN LLVMConfig.cmake EXCLUDE
-    PATTERN LLVMConfigVersion.cmake EXCLUDE
-    PATTERN LLVM-Config.cmake EXCLUDE
-    PATTERN GetHostTriple.cmake EXCLUDE
-    PATTERN CheckAtomic.cmake EXCLUDE)
-endif()
+# == Decompiler OFF BEGIN ==
+# To fix build with MSVC project, do not install anything from below.
+# if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+#   install(EXPORT LLVMExports DESTINATION ${LLVM_INSTALL_PACKAGE_DIR})
+#
+#   install(FILES
+#     ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/LLVMConfig.cmake
+#     ${llvm_cmake_builddir}/LLVMConfigVersion.cmake
+#     LLVM-Config.cmake
+#     DESTINATION ${LLVM_INSTALL_PACKAGE_DIR})
+#
+#   install(DIRECTORY .
+#     DESTINATION ${LLVM_INSTALL_PACKAGE_DIR}
+#     FILES_MATCHING PATTERN *.cmake
+#     PATTERN .svn EXCLUDE
+#     PATTERN LLVMConfig.cmake EXCLUDE
+#     PATTERN LLVMConfigVersion.cmake EXCLUDE
+#     PATTERN LLVM-Config.cmake EXCLUDE
+#     PATTERN GetHostTriple.cmake EXCLUDE
+#     PATTERN CheckAtomic.cmake EXCLUDE)
+# endif()
+# == Decompiler OFF END ==

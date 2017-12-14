@@ -558,10 +558,13 @@ macro(add_llvm_library name)
         set(install_type ARCHIVE)
       endif()
 
-      install(TARGETS ${name}
-            EXPORT LLVMExports
-            ${install_type} DESTINATION ${install_dir}
-            COMPONENT ${name})
+      # == Decompiler OFF BEGIN ==
+      # To fix build with MSVC project, do not install any libraries.
+      # install(TARGETS ${name}
+      #       EXPORT LLVMExports
+      #       ${install_type} DESTINATION ${install_dir}
+      #       COMPONENT ${name})
+      # == Decompiler OFF END ==
 
       if (NOT CMAKE_CONFIGURATION_TYPES)
         add_custom_target(install-${name}
@@ -592,10 +595,13 @@ macro(add_llvm_loadable_module name)
         else()
           set(dlldir "lib${LLVM_LIBDIR_SUFFIX}")
         endif()
-        install(TARGETS ${name}
-          EXPORT LLVMExports
-          LIBRARY DESTINATION ${dlldir}
-          ARCHIVE DESTINATION lib${LLVM_LIBDIR_SUFFIX})
+        # == Decompiler OFF BEGIN ==
+        # To fix build with MSVC project, do not install any loadable modules.
+        # install(TARGETS ${name}
+        #   EXPORT LLVMExports
+        #   LIBRARY DESTINATION ${dlldir}
+        #   ARCHIVE DESTINATION lib${LLVM_LIBDIR_SUFFIX})
+        # == Decompiler OFF END ==
       endif()
       set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${name})
     endif()
@@ -768,10 +774,17 @@ macro(add_llvm_tool name)
   list(FIND LLVM_TOOLCHAIN_TOOLS ${name} LLVM_IS_${name}_TOOLCHAIN_TOOL)
   if (LLVM_IS_${name}_TOOLCHAIN_TOOL GREATER -1 OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
     if( LLVM_BUILD_TOOLS )
-      install(TARGETS ${name}
-              EXPORT LLVMExports
-              RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
-              COMPONENT ${name})
+      # == Decompiler BEGIN ==
+      # To fix build with MSVC project, install only llvm-as and llvm-dis.
+      if("${name}" STREQUAL "llvm-as" OR "${name}" STREQUAL "llvm-dis")
+		# We always build LLVM in the release mode. Without forcing the release
+		# mode here (directory "Release"), MSVC always tries to install it from
+		# the non-existing "Debug" directory, even when CMAKE_BUILD_TYPE is
+		# "Release. I have no idea why.
+        install(FILES "${CMAKE_BINARY_DIR}/Release/bin/${name}.exe"
+          DESTINATION "${CMAKE_BINARY_DIR}/../../../../decompiler/bin")
+      endif()
+      # == Decompiler END ==
 
       if (NOT CMAKE_CONFIGURATION_TYPES)
         add_custom_target(install-${name}

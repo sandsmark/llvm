@@ -154,6 +154,9 @@ public:
   uint32_t flags() const;
   int64_t addend() const;
   int ordinal() const;
+  // DECOMPILER BEGIN (#1790)
+  bool malformed() const;
+  // DECOMPILER END (#1790)
 
   bool operator==(const MachOBindEntry &) const;
 

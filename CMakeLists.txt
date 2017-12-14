@@ -797,41 +797,44 @@ endif()
 
 add_subdirectory(cmake/modules)
 
-if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
-  install(DIRECTORY include/llvm include/llvm-c
-    DESTINATION include
-    COMPONENT llvm-headers
-    FILES_MATCHING
-    PATTERN "*.def"
-    PATTERN "*.h"
-    PATTERN "*.td"
-    PATTERN "*.inc"
-    PATTERN "LICENSE.TXT"
-    PATTERN ".svn" EXCLUDE
-    )
-
-  install(DIRECTORY ${LLVM_INCLUDE_DIR}/llvm
-    DESTINATION include
-    COMPONENT llvm-headers
-    FILES_MATCHING
-    PATTERN "*.def"
-    PATTERN "*.h"
-    PATTERN "*.gen"
-    PATTERN "*.inc"
-    # Exclude include/llvm/CMakeFiles/intrinsics_gen.dir, matched by "*.def"
-    PATTERN "CMakeFiles" EXCLUDE
-    PATTERN "config.h" EXCLUDE
-    PATTERN ".svn" EXCLUDE
-    )
-
-  if (NOT CMAKE_CONFIGURATION_TYPES)
-    add_custom_target(installhdrs
-                      DEPENDS ${name}
-                      COMMAND "${CMAKE_COMMAND}"
-                              -DCMAKE_INSTALL_COMPONENT=llvm-headers
-                              -P "${CMAKE_BINARY_DIR}/cmake_install.cmake")
-  endif()
-endif()
+# == Decompiler OFF BEGIN ==
+# To fix build with MSVC project, do not install any includes.
+# if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+#   install(DIRECTORY include/llvm include/llvm-c
+#     DESTINATION include
+#     COMPONENT llvm-headers
+#     FILES_MATCHING
+#     PATTERN "*.def"
+#     PATTERN "*.h"
+#     PATTERN "*.td"
+#     PATTERN "*.inc"
+#     PATTERN "LICENSE.TXT"
+#     PATTERN ".svn" EXCLUDE
+#     )
+#
+#   install(DIRECTORY ${LLVM_INCLUDE_DIR}/llvm
+#     DESTINATION include
+#     COMPONENT llvm-headers
+#     FILES_MATCHING
+#     PATTERN "*.def"
+#     PATTERN "*.h"
+#     PATTERN "*.gen"
+#     PATTERN "*.inc"
+#     # Exclude include/llvm/CMakeFiles/intrinsics_gen.dir, matched by "*.def"
+#     PATTERN "CMakeFiles" EXCLUDE
+#     PATTERN "config.h" EXCLUDE
+#     PATTERN ".svn" EXCLUDE
+#     )
+#
+#   if (NOT CMAKE_CONFIGURATION_TYPES)
+#     add_custom_target(installhdrs
+#                       DEPENDS ${name}
+#                       COMMAND "${CMAKE_COMMAND}"
+#                               -DCMAKE_INSTALL_COMPONENT=llvm-headers
+#                               -P "${CMAKE_BINARY_DIR}/cmake_install.cmake")
+#   endif()
+# endif()
+# == Decompiler OFF END ==
 
 # This must be at the end of the LLVM root CMakeLists file because it must run
 # after all targets are created.

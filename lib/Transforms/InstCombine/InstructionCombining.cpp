@@ -2253,7 +2253,16 @@ Instruction *InstCombiner::visitSwitchInst(SwitchInst &SI) {
 
   ConstantInt *AddRHS = nullptr;
   if (match(Cond, m_Add(m_Value(), m_ConstantInt(AddRHS)))) {
-    Instruction *I = cast<Instruction>(Cond);
+// Decompiler - OLD CODE.
+//    Instruction *I = cast<Instruction>(Cond);
+// Decompiler - NEW CODE START.
+	// The bug was reported to upstream on 2016-09-22
+	// (https://llvm.org/bugs/show_bug.cgi?id=30486).
+    Instruction *I = dyn_cast<Instruction>(Cond);
+    if (I == nullptr) {
+    	return nullptr;
+    }
+// Decompiler - NEW CODE END.
     // Change 'switch (X+4) case 1:' into 'switch (X) case -3'.
     for (SwitchInst::CaseIt i = SI.case_begin(), e = SI.case_end(); i != e;
          ++i) {
@@ -3094,6 +3103,12 @@ static bool prepareICWorklistFromFunction(Function &F, const DataLayout &DL,
   MadeIRChange |=
       AddReachableCodeToWorklist(&F.front(), DL, Visited, ICWorklist, TLI);
 
+// Decompiler - CONDITIONAL OFF
+// Do not remove instructions in unreachable BBs if specific named metadata
+// are present in the module.
+//
+auto* nmd = F.getParent()->getNamedMetadata("llvmToAsmGlobalVariableName");
+if (nmd == nullptr) {
   // Do a quick scan over the function.  If we find any blocks that are
   // unreachable, remove any instructions inside of them.  This prevents
   // the instcombine code from having to deal with some bad special cases.
@@ -3105,6 +3120,7 @@ static bool prepareICWorklistFromFunction(Function &F, const DataLayout &DL,
     MadeIRChange |= NumDeadInstInBB > 0;
     NumDeadInst += NumDeadInstInBB;
   }
+}
 
   return MadeIRChange;
 }

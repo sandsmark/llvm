@@ -40,30 +40,37 @@ if (WIN32)
     set(MSC_VERSION)
     set(mflag)
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v100}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v110}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v110_xp}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v120}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v120_xp}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v140}" DESTINATION tools/msbuild/${platform})
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v140_xp}" DESTINATION tools/msbuild/${platform})
+    # == Decompiler OFF BEGIN ==
+    # To fix build with MSVC project, do not install any files in this
+    # directory.
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v100}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v110}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v110_xp}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v120}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v120_xp}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v140}" DESTINATION tools/msbuild/${platform})
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${platform}/${prop_file_v140_xp}" DESTINATION tools/msbuild/${platform})
 
-    install(FILES "Microsoft.Cpp.Win32.LLVM-vs2010.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2010.targets")
-    install(FILES "Microsoft.Cpp.Win32.LLVM-vs2012.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2012.targets")
-    install(FILES "Microsoft.Cpp.Win32.LLVM-vs2012_xp.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2012_xp.targets")
-    install(FILES "toolset-vs2013.targets" DESTINATION "tools/msbuild/${platform}")
-    install(FILES "toolset-vs2013_xp.targets" DESTINATION "tools/msbuild/${platform}")
-    install(FILES "toolset-vs2014.targets" DESTINATION "tools/msbuild/${platform}")
-    install(FILES "toolset-vs2014_xp.targets" DESTINATION "tools/msbuild/${platform}")
+    # install(FILES "Microsoft.Cpp.Win32.LLVM-vs2010.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2010.targets")
+    # install(FILES "Microsoft.Cpp.Win32.LLVM-vs2012.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2012.targets")
+    # install(FILES "Microsoft.Cpp.Win32.LLVM-vs2012_xp.targets" DESTINATION "tools/msbuild/${platform}" RENAME "Microsoft.Cpp.${platform}.LLVM-vs2012_xp.targets")
+    # install(FILES "toolset-vs2013.targets" DESTINATION "tools/msbuild/${platform}")
+    # install(FILES "toolset-vs2013_xp.targets" DESTINATION "tools/msbuild/${platform}")
+    # install(FILES "toolset-vs2014.targets" DESTINATION "tools/msbuild/${platform}")
+    # install(FILES "toolset-vs2014_xp.targets" DESTINATION "tools/msbuild/${platform}")
+    # == Decompiler OFF END ==
   endforeach()
 
   set(LIB_PATH_VERSION)
   set(REG_KEY)
 
-  install(DIRECTORY .
-    DESTINATION tools/msbuild
-    FILES_MATCHING
-    PATTERN "*.bat"
-    PATTERN ".svn" EXCLUDE
-    )
+  # == Decompiler OFF BEGIN ==
+  # To fix build with MSVC project, do not install any files in this directory.
+  # install(DIRECTORY .
+  #   DESTINATION tools/msbuild
+  #   FILES_MATCHING
+  #   PATTERN "*.bat"
+  #   PATTERN ".svn" EXCLUDE
+  #   )
+  # == Decompiler OFF END ==
 endif()
